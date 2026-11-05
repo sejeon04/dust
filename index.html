@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!-- 한국어 문서 설정 -->
+<html lang="ko">
+<head>
+  <!-- 문자 인코딩 설정 -->
+  <meta charset="UTF-8">
+  <!-- 모바일 기기에서도 화면이 깨지지 않도록 반응형 뷰포트 설정 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 웹페이지 제목 -->
+  <title>실시간 대기오염 정보 조회</title>
+  <!-- 외부 스타일시트 연결 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 메인 전체 레이아웃 컨테이너 -->
+  <div class="app-container">
+
+    <!-- 상단 헤더 영역 -->
+    <header class="app-header">
+      <!-- 서비스 메인 타이틀 -->
+      <h1>실시간 대기오염 미세먼지 알리미</h1>
+      <!-- 부제목 안내 문구 -->
+      <p class="sub-text">한국환경공단 에어코리아 실시간 대기정보를 확인하세요.</p>
+    </header>
+
+    <!-- 시도 선택 컨트롤 바 -->
+    <section class="control-section">
+      <!-- 시도 선택 라벨 -->
+      <label for="sido-select" class="select-label">지역 선택</label>
+      <!-- 시도 드롭다운 메뉴 -->
+      <select id="sido-select" class="sido-dropdown">
+        <!-- 드롭다운 시도 옵션 목록 -->
+        <option value="서울" selected>서울</option>
+        <option value="전국">전국</option>
+        <option value="부산">부산</option>
+        <option value="대구">대구</option>
+        <option value="인천">인천</option>
+        <option value="광주">광주</option>
+        <option value="대전">대전</option>
+        <option value="울산">울산</option>
+        <option value="세종">세종</option>
+        <option value="경기">경기</option>
+        <option value="강원">강원</option>
+        <option value="충북">충북</option>
+        <option value="충남">충남</option>
+        <option value="전북">전북</option>
+        <option value="전남">전남</option>
+        <option value="경북">경북</option>
+        <option value="경남">경남</option>
+        <option value="제주">제주</option>
+      </select>
+    </section>
+
+    <!-- 지역 평균 미세먼지 수치 요약 카드 -->
+    <section class="summary-section">
+      <!-- 선택된 지역 이름 안내 -->
+      <div class="summary-header">
+        <span id="selected-sido-text">서울</span> 평균 미세먼지 (PM10)
+      </div>
+      <!-- 평균 수치를 보여주는 큰 숫자 디스플레이 -->
+      <div id="average-value" class="summary-value">-</div>
+      <!-- 평균 수치에 따른 등급 뱃지 표시 -->
+      <div id="average-badge" class="status-badge grade-unknown">데이터 조회 중</div>
+      <!-- 기준 시각 안내 문구 -->
+      <div id="last-updated" class="last-updated">측정 시각: -</div>
+    </section>
+
+    <!-- 상태 메시지 알림 영역 (로딩 및 에러 문구) -->
+    <div id="status-message" class="status-message">데이터를 불러오는 중입니다...</div>
+
+    <!-- 측정소별 카드 목록이 렌더링될 그리드 컨테이너 -->
+    <main id="station-list" class="station-grid"></main>
+
+  </div>
+
+  <!-- 자바스크립트 파일 연결 -->
+  <script src="script.js"></script>
+</body>
+</html>
+

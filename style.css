@@ -1,0 +1,273 @@
+/* 모든 요소 기본 여백 제거 및 박스 크기 모델 설정 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 전체 페이지 배경색과 기본 텍스트 색상 설정 */
+body {
+  background-color: #f3f4f6;
+  color: #1f2937;
+  padding: 16px;
+  min-height: 100vh;
+}
+
+/* 중앙 정렬 및 최대 너비를 제한하는 메인 컨테이너 */
+.app-container {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 상단 헤더 스타일 */
+.app-header {
+  text-align: center;
+  padding: 12px 0 4px;
+}
+
+/* 헤더 메인 타이틀 크기 및 굵기 */
+.app-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+/* 헤더 설명글 색상 및 크기 */
+.app-header .sub-text {
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+/* 시도 선택 드롭다운 래퍼 */
+.control-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #ffffff;
+  padding: 14px 20px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* 시도 선택 텍스트 라벨 */
+.select-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* 시도 드롭다운 셀렉트 박스 */
+.sido-dropdown {
+  padding: 8px 14px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #1f2937;
+  cursor: pointer;
+  outline: none;
+}
+
+/* 시도 드롭다운 포커스 시 테두리 강조 */
+.sido-dropdown:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* 지역 평균 요약 박스 */
+.summary-section {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 요약 헤더 텍스트 */
+.summary-header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+/* 평균 수치를 크고 굵게 보여주는 스타일 */
+.summary-value {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #111827;
+}
+
+/* 등급 상태 뱃지 기본 모양 */
+.status-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 4px;
+}
+
+/* 업데이트 시각 텍스트 */
+.last-updated {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+/* 로딩 및 상태 메시지 스타일 */
+.status-message {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #4b5563;
+  padding: 20px;
+}
+
+/* 측정소 카드를 나열하는 반응형 그리드 */
+.station-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+/* 개별 측정소 카드 기본 스타일 */
+.station-card {
+  background-color: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-left: 8px solid #9ca3af;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* 마우스 호버 시 카드 살짝 들뜸 효과 */
+.station-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 측정소 카드 상단 헤더 (이름 + 등급 뱃지) */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 측정소 이름 텍스트 */
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* 카드 내부 미세먼지 수치 행 그룹 */
+.card-data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  padding-bottom: 4px;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+/* 미세먼지 항목 라벨 */
+.data-label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* 미세먼지 측정값 굵은 글씨 */
+.data-value {
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* 측정 시각 푸터 영역 */
+.card-footer {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* [등급 1: 좋음] 파란색 테마 */
+.grade-1 {
+  border-left-color: #2563eb;
+  background-color: #ffffff;
+}
+.badge-grade-1 {
+  background-color: #2563eb;
+}
+
+/* [등급 2: 보통] 초록색 테마 */
+.grade-2 {
+  border-left-color: #16a34a;
+  background-color: #ffffff;
+}
+.badge-grade-2 {
+  background-color: #16a34a;
+}
+
+/* [등급 3: 나쁨] 주황색 테마 */
+.grade-3 {
+  border-left-color: #ea580c;
+  background-color: #ffffff;
+}
+.badge-grade-3 {
+  background-color: #ea580c;
+}
+
+/* [등급 4: 매우나쁨] 빨간색 테마 */
+.grade-4 {
+  border-left-color: #dc2626;
+  background-color: #ffffff;
+}
+.badge-grade-4 {
+  background-color: #dc2626;
+}
+
+/* [등급 미정/점검 중] 회색 테마 */
+.grade-unknown {
+  border-left-color: #9ca3af;
+  background-color: #ffffff;
+}
+.badge-grade-unknown {
+  background-color: #9ca3af;
+}
+
+/* 모바일 화면 (너비 480px 이하) 반응형 추가 대응 */
+@media (max-width: 480px) {
+  /* 모바일 여백 축소 */
+  body {
+    padding: 12px;
+  }
+  /* 모바일 메인 타이틀 크기 조정 */
+  .app-header h1 {
+    font-size: 1.35rem;
+  }
+  /* 모바일 평균 수치 크기 축소 */
+  .summary-value {
+    font-size: 2.8rem;
+  }
+  /* 1열 카드 전체 너비 확장 */
+  .station-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

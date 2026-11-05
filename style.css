@@ -1,273 +1,653 @@
-/* 모든 요소 기본 여백 제거 및 박스 크기 모델 설정 */
+/* 기본 스타일 초기화 및 프리텐다드 / 시스템 한글 폰트 적용 */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* 전체 페이지 배경색과 기본 텍스트 색상 설정 */
+/* 전체 배경 및 기본 텍스트 */
 body {
-  background-color: #f3f4f6;
-  color: #1f2937;
-  padding: 16px;
+  background-color: #f8fafc;
+  color: #1e293b;
+  padding: 20px 16px;
   min-height: 100vh;
 }
 
-/* 중앙 정렬 및 최대 너비를 제한하는 메인 컨테이너 */
+/* 반응형 메인 컨테이너 */
 .app-container {
-  max-width: 960px;
+  max-width: 900px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* 상단 헤더 스타일 */
+/* 상단 헤더 */
 .app-header {
   text-align: center;
-  padding: 12px 0 4px;
+  padding: 8px 0;
 }
 
-/* 헤더 메인 타이틀 크기 및 굵기 */
-.app-header h1 {
-  font-size: 1.6rem;
+.title-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.app-badge {
+  background-color: #0284c7;
+  color: #ffffff;
+  font-size: 0.75rem;
   font-weight: 700;
-  color: #111827;
-  margin-bottom: 6px;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  letter-spacing: -0.2px;
 }
 
-/* 헤더 설명글 색상 및 크기 */
+.app-header h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+}
+
 .app-header .sub-text {
   font-size: 0.95rem;
-  color: #6b7280;
+  color: #64748b;
+  margin-top: 4px;
 }
 
-/* 시도 선택 드롭다운 래퍼 */
+/* 시도 선택 컨트롤 바 */
 .control-section {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   background-color: #ffffff;
-  padding: 14px 20px;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding: 12px 20px;
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  border: 1px solid #e2e8f0;
 }
 
-/* 시도 선택 텍스트 라벨 */
 .select-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.sido-dropdown {
+  padding: 8px 16px;
   font-size: 1rem;
   font-weight: 600;
-  color: #374151;
-}
-
-/* 시도 드롭다운 셀렉트 박스 */
-.sido-dropdown {
-  padding: 8px 14px;
-  font-size: 1rem;
-  font-weight: 500;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
   background-color: #ffffff;
-  color: #1f2937;
+  color: #0f172a;
   cursor: pointer;
   outline: none;
+  transition: all 0.2s ease;
 }
 
-/* 시도 드롭다운 포커스 시 테두리 강조 */
 .sido-dropdown:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
 }
 
-/* 지역 평균 요약 박스 */
-.summary-section {
-  background-color: #ffffff;
-  border-radius: 16px;
-  padding: 24px;
+/* ========================================================
+   [공기 신호등] 메인 대표 상태 요약 카드
+   ======================================================== */
+.traffic-light-card {
+  border-radius: 20px;
+  padding: 28px 24px;
   text-align: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 14px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+}
+
+.region-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #334155;
+  letter-spacing: -0.3px;
+}
+
+/* 이모지 + 상태명 + 평균 수치 묶음 */
+.signal-main-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin: 6px 0;
+}
+
+/* 초대형 신호등 이모지 */
+.signal-emoji {
+  font-size: 4rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  animation: pulse-subtle 2s infinite ease-in-out;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+.signal-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* 상태 텍스트 (좋음/보통/나쁨/매우나쁨) */
+.signal-status {
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+/* 평균 수치 표시 */
+.signal-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.signal-value .unit {
+  font-size: 0.95rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+/* 한 줄 안내 문구 (나쁨 이상 시 마스크 권고) */
+.signal-advice {
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* 기준 시각 텍스트 ('2026년 10월 28일 16시 기준') */
+.signal-time {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+/* ========================================================
+   [가로 막대그래프 섹션] Chart.js 미세먼지 상위 10개
+   ======================================================== */
+.chart-section {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 22px 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 10px;
+}
+
+.chart-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.chart-unit {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 360px;
+}
+
+/* ========================================================
+   [지도 섹션] Leaflet 오픈소스 지도 및 범례
+   ======================================================== */
+.map-section {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 10px;
+}
+
+.map-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.map-desc {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-top: 2px;
+  display: block;
+}
+
+.map-legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-grade-1 { background-color: #2563eb; }
+.dot-grade-2 { background-color: #16a34a; }
+.dot-grade-3 { background-color: #ea580c; }
+.dot-grade-4 { background-color: #dc2626; }
+
+.map-container {
+  width: 100%;
+  height: 380px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  z-index: 1;
+}
+
+/* Leaflet 팝업 스타일 커스텀 */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  padding: 4px;
+}
+
+.map-popup {
+  padding: 4px 2px;
+  min-width: 160px;
+}
+
+.map-popup h4 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 4px;
+}
+
+.popup-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  margin: 3px 0;
+}
+
+.popup-label { color: #64748b; }
+.popup-val { font-weight: 700; color: #0f172a; }
+
+/* ========================================================
+   [측정소 검색 섹션]
+   ======================================================== */
+.search-section {
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
-/* 요약 헤더 텍스트 */
-.summary-header {
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 10px 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.search-box:focus-within {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+.search-icon {
   font-size: 1.1rem;
+  margin-right: 10px;
+  color: #64748b;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: #0f172a;
+  background: transparent;
+}
+
+.search-clear {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.search-clear:hover {
+  color: #0f172a;
+}
+
+.search-count {
+  font-size: 0.88rem;
   font-weight: 600;
-  color: #4b5563;
+  color: #64748b;
+  padding-left: 4px;
 }
 
-/* 평균 수치를 크고 굵게 보여주는 스타일 */
-.summary-value {
-  font-size: 3.5rem;
-  font-weight: 800;
-  line-height: 1.1;
-  color: #111827;
+/* ========================================================
+   공기 신호등 및 측정소 카드 [등급별 테두리 및 은은한 배경색]
+   ======================================================== */
+
+/* 1. 좋음 (파랑) */
+.card-grade-1 {
+  background-color: #eff6ff;
+  border: 1.5px solid #93c5fd;
+  color: #1e3a8a;
+}
+.card-grade-1 .signal-status { color: #1d4ed8; }
+.card-grade-1 .signal-value { color: #2563eb; }
+.card-grade-1 .signal-advice { color: #1e40af; border: 1px solid #bfdbfe; }
+.badge-grade-1 {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+  border: 1px solid #93c5fd;
 }
 
-/* 등급 상태 뱃지 기본 모양 */
-.status-badge {
-  display: inline-block;
-  padding: 6px 16px;
-  border-radius: 9999px;
-  font-size: 0.95rem;
-  font-weight: 700;
+/* 2. 보통 (초록) */
+.card-grade-2 {
+  background-color: #f0fdf4;
+  border: 1.5px solid #86efac;
+  color: #14532d;
+}
+.card-grade-2 .signal-status { color: #15803d; }
+.card-grade-2 .signal-value { color: #16a34a; }
+.card-grade-2 .signal-advice { color: #166534; border: 1px solid #bbf7d0; }
+.badge-grade-2 {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+/* 3. 나쁨 (주황) */
+.card-grade-3 {
+  background-color: #fff7ed;
+  border: 1.5px solid #fdba74;
+  color: #7c2d12;
+}
+.card-grade-3 .signal-status { color: #c2410c; }
+.card-grade-3 .signal-value { color: #ea580c; }
+.card-grade-3 .signal-advice {
+  background-color: #ea580c;
   color: #ffffff;
-  margin-top: 4px;
+  border: none;
+  animation: bounce-subtle 1.8s infinite;
+}
+.badge-grade-3 {
+  background-color: #ffedd5;
+  color: #c2410c;
+  border: 1px solid #fdba74;
 }
 
-/* 업데이트 시각 텍스트 */
-.last-updated {
-  font-size: 0.85rem;
-  color: #9ca3af;
-  margin-top: 4px;
+/* 4. 매우나쁨 (빨강) */
+.card-grade-4 {
+  background-color: #fef2f2;
+  border: 1.5px solid #fca5a5;
+  color: #7f1d1d;
+}
+.card-grade-4 .signal-status { color: #b91c1c; }
+.card-grade-4 .signal-value { color: #dc2626; }
+.card-grade-4 .signal-advice {
+  background-color: #dc2626;
+  color: #ffffff;
+  border: none;
+  animation: bounce-subtle 1.5s infinite;
+}
+.badge-grade-4 {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
 }
 
-/* 로딩 및 상태 메시지 스타일 */
+/* 기본/정보없음 (회색) */
+.card-grade-default {
+  background-color: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  color: #334155;
+}
+.card-grade-default .signal-status { color: #475569; }
+.card-grade-default .signal-value { color: #64748b; }
+.card-grade-default .signal-advice { color: #475569; border: 1px solid #e2e8f0; }
+.badge-grade-default {
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+}
+
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* ========================================================
+   로딩 (불러오는 중...) 인디케이터
+   ======================================================== */
+.loading-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px 20px;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3.5px solid #e2e8f0;
+  border-top-color: #0284c7;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0284c7;
+}
+
+/* 상태 및 에러 메시지 */
 .status-message {
   text-align: center;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #4b5563;
-  padding: 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #dc2626;
+  padding: 14px;
+  background-color: #fee2e2;
+  border-radius: 10px;
+  border: 1px solid #fca5a5;
 }
 
-/* 측정소 카드를 나열하는 반응형 그리드 */
+/* ========================================================
+   측정소 카드 그리드 및 카드 스타일 (은은한 배경과 테두리)
+   ======================================================== */
 .station-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 16px;
 }
 
-/* 개별 측정소 카드 기본 스타일 */
 .station-card {
-  background-color: #ffffff;
-  border-radius: 14px;
-  padding: 18px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border-left: 8px solid #9ca3af;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-/* 마우스 호버 시 카드 살짝 들뜸 효과 */
 .station-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
 }
 
-/* 측정소 카드 상단 헤더 (이름 + 등급 뱃지) */
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* 측정소 이름 텍스트 */
 .card-title {
   font-size: 1.15rem;
-  font-weight: 700;
-  color: #111827;
+  font-weight: 800;
+  color: #0f172a;
 }
 
-/* 카드 내부 미세먼지 수치 행 그룹 */
+.status-badge {
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 9999px;
+}
+
 .card-data-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.95rem;
-  padding-bottom: 4px;
-  border-bottom: 1px dashed #e5e7eb;
+  font-size: 0.92rem;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
 }
 
-/* 미세먼지 항목 라벨 */
 .data-label {
-  color: #6b7280;
-  font-weight: 500;
+  color: #475569;
+  font-weight: 600;
 }
 
-/* 미세먼지 측정값 굵은 글씨 */
 .data-value {
-  font-weight: 700;
-  color: #1f2937;
+  font-weight: 800;
+  color: #0f172a;
 }
 
-/* 측정 시각 푸터 영역 */
 .card-footer {
   font-size: 0.8rem;
-  color: #9ca3af;
+  color: #64748b;
   text-align: right;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
-/* [등급 1: 좋음] 파란색 테마 */
-.grade-1 {
-  border-left-color: #2563eb;
+/* 검색 결과 없을 때 스타일 */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 20px;
   background-color: #ffffff;
-}
-.badge-grade-1 {
-  background-color: #2563eb;
-}
-
-/* [등급 2: 보통] 초록색 테마 */
-.grade-2 {
-  border-left-color: #16a34a;
-  background-color: #ffffff;
-}
-.badge-grade-2 {
-  background-color: #16a34a;
+  border-radius: 16px;
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px dashed #cbd5e1;
 }
 
-/* [등급 3: 나쁨] 주황색 테마 */
-.grade-3 {
-  border-left-color: #ea580c;
-  background-color: #ffffff;
-}
-.badge-grade-3 {
-  background-color: #ea580c;
-}
-
-/* [등급 4: 매우나쁨] 빨간색 테마 */
-.grade-4 {
-  border-left-color: #dc2626;
-  background-color: #ffffff;
-}
-.badge-grade-4 {
-  background-color: #dc2626;
-}
-
-/* [등급 미정/점검 중] 회색 테마 */
-.grade-unknown {
-  border-left-color: #9ca3af;
-  background-color: #ffffff;
-}
-.badge-grade-unknown {
-  background-color: #9ca3af;
-}
-
-/* 모바일 화면 (너비 480px 이하) 반응형 추가 대응 */
+/* 모바일 화면 대응 */
 @media (max-width: 480px) {
-  /* 모바일 여백 축소 */
   body {
-    padding: 12px;
+    padding: 14px 10px;
   }
-  /* 모바일 메인 타이틀 크기 조정 */
   .app-header h1 {
-    font-size: 1.35rem;
+    font-size: 1.45rem;
   }
-  /* 모바일 평균 수치 크기 축소 */
-  .summary-value {
-    font-size: 2.8rem;
+  .signal-main-display {
+    gap: 12px;
   }
-  /* 1열 카드 전체 너비 확장 */
+  .signal-emoji {
+    font-size: 3.2rem;
+  }
+  .signal-status {
+    font-size: 1.8rem;
+  }
+  .signal-value {
+    font-size: 1.2rem;
+  }
+  .signal-advice {
+    font-size: 0.95rem;
+    padding: 6px 14px;
+  }
+  .chart-wrapper {
+    height: 320px;
+  }
+  .map-container {
+    height: 300px;
+  }
+  .map-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
   .station-grid {
     grid-template-columns: 1fr;
   }
 }
-

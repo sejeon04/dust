@@ -4,77 +4,144 @@
 <head>
   <!-- 문자 인코딩 설정 -->
   <meta charset="UTF-8">
-  <!-- 모바일 기기에서도 화면이 깨지지 않도록 반응형 뷰포트 설정 -->
+  <!-- 모바일 반응형 뷰포트 설정 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- 웹페이지 제목 -->
-  <title>실시간 대기오염 정보 조회</title>
-  <!-- 외부 스타일시트 연결 -->
+  <title>공기 신호등 - 실시간 미세먼지</title>
+  <!-- 프리텐다드(Pretendard) 웹폰트 CDN 연결 -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <!-- Leaflet 지도 오픈소스 CSS CDN 연결 -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- 스타일시트 연결 -->
   <link rel="stylesheet" href="style.css">
+  <!-- Chart.js CDN 라이브러리 추가 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Leaflet 지도 오픈소스 JS CDN 연결 -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
-  <!-- 메인 전체 레이아웃 컨테이너 -->
+  <!-- 메인 레이아웃 래퍼 -->
   <div class="app-container">
 
     <!-- 상단 헤더 영역 -->
     <header class="app-header">
-      <!-- 서비스 메인 타이틀 -->
-      <h1>실시간 대기오염 미세먼지 알리미</h1>
-      <!-- 부제목 안내 문구 -->
-      <p class="sub-text">한국환경공단 에어코리아 실시간 대기정보를 확인하세요.</p>
+      <div class="title-wrap">
+        <span class="app-badge">실시간 대기질</span>
+        <h1>🚦 공기 신호등</h1>
+      </div>
+      <p class="sub-text">한눈에 보는 우리 동네 미세먼지 신호등</p>
     </header>
 
     <!-- 시도 선택 컨트롤 바 -->
     <section class="control-section">
-      <!-- 시도 선택 라벨 -->
       <label for="sido-select" class="select-label">지역 선택</label>
-      <!-- 시도 드롭다운 메뉴 -->
-      <select id="sido-select" class="sido-dropdown">
-        <!-- 드롭다운 시도 옵션 목록 -->
-        <option value="서울" selected>서울</option>
-        <option value="전국">전국</option>
-        <option value="부산">부산</option>
-        <option value="대구">대구</option>
-        <option value="인천">인천</option>
-        <option value="광주">광주</option>
-        <option value="대전">대전</option>
-        <option value="울산">울산</option>
-        <option value="세종">세종</option>
-        <option value="경기">경기</option>
-        <option value="강원">강원</option>
-        <option value="충북">충북</option>
-        <option value="충남">충남</option>
-        <option value="전북">전북</option>
-        <option value="전남">전남</option>
-        <option value="경북">경북</option>
-        <option value="경남">경남</option>
-        <option value="제주">제주</option>
-      </select>
-    </section>
-
-    <!-- 지역 평균 미세먼지 수치 요약 카드 -->
-    <section class="summary-section">
-      <!-- 선택된 지역 이름 안내 -->
-      <div class="summary-header">
-        <span id="selected-sido-text">서울</span> 평균 미세먼지 (PM10)
+      <div class="select-wrapper">
+        <select id="sido-select" class="sido-dropdown">
+          <option value="서울" selected>서울</option>
+          <option value="전국">전국</option>
+          <option value="부산">부산</option>
+          <option value="대구">대구</option>
+          <option value="인천">인천</option>
+          <option value="광주">광주</option>
+          <option value="대전">대전</option>
+          <option value="울산">울산</option>
+          <option value="세종">세종</option>
+          <option value="경기">경기</option>
+          <option value="강원">강원</option>
+          <option value="충북">충북</option>
+          <option value="충남">충남</option>
+          <option value="전북">전북</option>
+          <option value="전남">전남</option>
+          <option value="경북">경북</option>
+          <option value="경남">경남</option>
+          <option value="제주">제주</option>
+        </select>
       </div>
-      <!-- 평균 수치를 보여주는 큰 숫자 디스플레이 -->
-      <div id="average-value" class="summary-value">-</div>
-      <!-- 평균 수치에 따른 등급 뱃지 표시 -->
-      <div id="average-badge" class="status-badge grade-unknown">데이터 조회 중</div>
-      <!-- 기준 시각 안내 문구 -->
-      <div id="last-updated" class="last-updated">측정 시각: -</div>
     </section>
 
-    <!-- 상태 메시지 알림 영역 (로딩 및 에러 문구) -->
-    <div id="status-message" class="status-message">데이터를 불러오는 중입니다...</div>
+    <!-- '공기 신호등' 대형 대표 상태 요약 카드 -->
+    <section id="traffic-light-card" class="traffic-light-card card-grade-default">
+      <!-- 지역 타이틀 -->
+      <div class="region-title">
+        <span id="selected-sido-text">서울</span> 대기 신호등
+      </div>
 
-    <!-- 측정소별 카드 목록이 렌더링될 그리드 컨테이너 -->
+      <!-- 이모지 + 상태 명칭 + 평균 수치 묶음 -->
+      <div class="signal-main-display">
+        <!-- 신호등 이모지 (🔵🟢🟠🔴) -->
+        <span id="signal-emoji" class="signal-emoji">⚪</span>
+        <div class="signal-info">
+          <!-- 좋음/보통/나쁨/매우나쁨 텍스트 -->
+          <div id="signal-status" class="signal-status">측정 중</div>
+          <!-- 평균 수치 -->
+          <div id="signal-value" class="signal-value">-</div>
+        </div>
+      </div>
+
+      <!-- 한 줄 행동 가이드 안내 문구 (나쁨 이상 시 마스크 권고) -->
+      <div id="signal-advice" class="signal-advice">
+        데이터를 불러오는 중입니다.
+      </div>
+
+      <!-- 기준 시각 ('2026년 10월 28일 16시 기준' 형태) -->
+      <div id="signal-time" class="signal-time">측정 시각: -</div>
+    </section>
+
+    <!-- 측정소별 미세먼지 수치 상위 10개 가로 막대그래프 섹션 -->
+    <section id="chart-section" class="chart-section">
+      <div class="chart-header">
+        <h2 class="chart-title">📊 미세먼지 수치 높은 순 (상위 10개)</h2>
+        <span class="chart-unit">단위: ㎍/㎥</span>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="dust-chart"></canvas>
+      </div>
+    </section>
+
+    <!-- 측정소 지도 시각화 섹션 (등급별 색상 마커 표시) -->
+    <section id="map-section" class="map-section">
+      <div class="map-header">
+        <div class="map-title-wrap">
+          <h2 class="map-title">🗺️ 측정소 실시간 지도</h2>
+          <span class="map-desc">마커를 클릭하면 측정소 상세 정보를 볼 수 있습니다</span>
+        </div>
+        <!-- 지도 범례 -->
+        <div class="map-legend">
+          <span class="legend-item"><span class="legend-dot dot-grade-1"></span>좋음</span>
+          <span class="legend-item"><span class="legend-dot dot-grade-2"></span>보통</span>
+          <span class="legend-item"><span class="legend-dot dot-grade-3"></span>나쁨</span>
+          <span class="legend-item"><span class="legend-dot dot-grade-4"></span>매우나쁨</span>
+        </div>
+      </div>
+      <!-- Leaflet 지도가 렌더링될 컨테이너 -->
+      <div id="map" class="map-container"></div>
+    </section>
+
+    <!-- 측정소 검색 입력 영역 -->
+    <section class="search-section">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="station-search" class="search-input" placeholder="측정소 이름으로 검색하세요 (예: 강남구, 중구)...">
+        <button type="button" id="search-clear" class="search-clear" style="display: none;" title="검색어 지우기">✕</button>
+      </div>
+      <div id="search-count" class="search-count">전체 측정소 목록</div>
+    </section>
+
+    <!-- 데이터 로딩 인디케이터 (불러오는 중...) -->
+    <div id="loading-indicator" class="loading-box" style="display: none;">
+      <div class="spinner"></div>
+      <p class="loading-text">불러오는 중...</p>
+    </div>
+
+    <!-- 에러 및 상태 안내 메시지 -->
+    <div id="status-message" class="status-message" style="display: none;"></div>
+
+    <!-- 측정소별 카드 그리드 목록 -->
     <main id="station-list" class="station-grid"></main>
 
   </div>
 
-  <!-- 자바스크립트 파일 연결 -->
+  <!-- 자바스크립트 연결 -->
   <script src="script.js"></script>
 </body>
 </html>
-

@@ -19,8 +19,9 @@ if (fs.existsSync(envPath)) {
   });
 }
 
-// api/dust.js 핸들러 불러오기
+// api/dust.js 및 api/stations.js 핸들러 불러오기
 const dustHandler = require('./api/dust');
+const stationsHandler = require('./api/stations');
 
 // MIME 타입 매핑
 const MIME_TYPES = {
@@ -60,6 +61,32 @@ const server = http.createServer(async (req, res) => {
       console.error('API Error:', err);
       res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
       res.end(JSON.stringify({ message: '서버 내부 오류가 발생했습니다.' }));
+    }
+    return;
+  }
+
+  // 1-2. /api/stations 요청 처리 (측정소 좌표 조회)
+  if (pathname === '/api/stations') {
+    req.query = parsedUrl.query;
+    let statusCode = 200;
+    const mockRes = {
+      setHeader: (key, val) => res.setHeader(key, val),
+      status: (code) => {
+        statusCode = code;
+        return mockRes;
+      },
+      json: (data) => {
+        res.writeHead(statusCode, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify(data));
+      }
+    };
+
+    try {
+      await stationsHandler(req, mockRes);
+    } catch (err) {
+      console.error('Stations API Error:', err);
+      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ message: '측정소 좌표 조회 오류가 발생했습니다.' }));
     }
     return;
   }

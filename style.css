@@ -651,3 +651,31 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* ========================================================
+   [푸터 영역 - 데이터 출처 표기]
+   ======================================================== */
+.app-footer {
+  margin-top: 10px;
+  padding: 24px 16px;
+  text-align: center;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.source-info {
+  font-size: 0.9rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+.source-info strong {
+  color: #0f172a;
+}
+
+.source-desc {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}

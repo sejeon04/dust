@@ -1,0 +1,13 @@
+{
+  "name": "air-korea-dust-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "한국환경공단 에어코리아 대기오염 실시간 신호등 웹앱",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}
+
